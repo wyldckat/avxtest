@@ -54,21 +54,21 @@ int main(){
     ymm8, ymm9, ymm10, ymm11;
 
   t1 = clock();
-  const int col_reduced = col - col%32;
-  const int col_reduced_32 = col - col%16;
+  const int col_reduced = col - col%16;
+  const int col_reduced_32 = col - col%8;
   for (int r = 0; r < num_trails; r++)
     for (int i=0; i<row; i++) {
       double res = 0;
-      for (int j=0; j<col_reduced; j+=32) {
+      for (int j=0; j<col_reduced; j+=16) {
         ymm8 = _mm256_loadu_pd(&x[j]);
-        ymm9 = _mm256_loadu_pd(&x[j+8]);
-        ymm10 = _mm256_loadu_pd(&x[j+16]);
-        ymm11 = _mm256_loadu_pd(&x[j+24]);
+        ymm9 = _mm256_loadu_pd(&x[j+4]);
+        ymm10 = _mm256_loadu_pd(&x[j+8]);
+        ymm11 = _mm256_loadu_pd(&x[j+12]);
 
         ymm0 = _mm256_loadu_pd(&w[i][j]);
-        ymm1 = _mm256_loadu_pd(&w[i][j+8]);
-        ymm2 = _mm256_loadu_pd(&w[i][j+16]);
-        ymm3 = _mm256_loadu_pd(&w[i][j+24]);
+        ymm1 = _mm256_loadu_pd(&w[i][j+4]);
+        ymm2 = _mm256_loadu_pd(&w[i][j+8]);
+        ymm3 = _mm256_loadu_pd(&w[i][j+12]);
 
         ymm0 = _mm256_mul_pd(ymm0, ymm8 );
         ymm1 = _mm256_mul_pd(ymm1, ymm9 );
@@ -83,12 +83,12 @@ int main(){
         for (int k=0; k<4; k++)
           res += scratchpad[k];
       }
-      for (int j=col_reduced; j<col_reduced_32; j+=16) {
+      for (int j=col_reduced; j<col_reduced_32; j+=8) {
         ymm8 = _mm256_loadu_pd(&x[j]);
-        ymm9 = _mm256_loadu_pd(&x[j+8]);
+        ymm9 = _mm256_loadu_pd(&x[j+4]);
 
         ymm0 = _mm256_loadu_pd(&w[i][j]);
-        ymm1 = _mm256_loadu_pd(&w[i][j+8]);
+        ymm1 = _mm256_loadu_pd(&w[i][j+4]);
 
         ymm0 = _mm256_mul_pd(ymm0, ymm8 );
         ymm1 = _mm256_mul_pd(ymm1, ymm9 );
