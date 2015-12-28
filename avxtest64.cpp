@@ -3,6 +3,7 @@
  * Adaptation made based on the names available in avxintrin.h and the matrix calculation being made.
  */
 #include <iostream>
+#include <iomanip>
 #include <time.h>
 extern "C"
 {
@@ -17,6 +18,7 @@ int main(){
   double w[row][col];
   double x[col];
   double y[row];
+  double yb[row];
   double scratchpad[4];
   for (int i=0; i<row; i++) {
     for (int j=0; j<col; j++) {
@@ -28,6 +30,8 @@ int main(){
   }
 
   clock_t t1, t2;
+  
+  cout<<setprecision(16);
 
   t1 = clock();
   for (int r = 0; r < num_trails; r++)
@@ -43,12 +47,12 @@ int main(){
     }
   t2 = clock();
   double diff = (((double)t2 - (double)t1) / CLOCKS_PER_SEC ) * 1000;
-  cout<<"Time taken: "<<diff<<endl;
+  cout<<"Time taken (ms): "<<diff<<endl;
 
   for (int i=0; i<row; i++) {
     cout<<y[i]<<", ";
   }
-  cout<<endl;
+  cout<<endl<<endl;
 
   __m256d ymm0, ymm1, ymm2, ymm3,
     ymm8, ymm9, ymm10, ymm11;
@@ -102,16 +106,22 @@ int main(){
       for (int l=col_reduced_32; l<col; l++) {
         res += w[i][l] * x[l];
       }
-      y[i] = res;
+      yb[i] = res;
     }
   t2 = clock();
   diff = (((double)t2 - (double)t1) / CLOCKS_PER_SEC ) * 1000;
-  cout<<"Time taken: "<<diff<<endl;
+  cout<<"Time taken (ms): "<<diff<<endl;
 
   for (int i=0; i<row; i++) {
     cout<<y[i]<<", ";
   }
-  cout<<endl;
+  cout<<endl<<endl;
 
+  cout<<"Without AVX\t|\tWith AVX\t|\tDifference"<<endl;
+  for (int i=0; i<row; i++) {
+    cout<<y[i]<<" | "<<yb[i]<<" | "<<y[i]-yb[i]<<endl;
+  }
+  cout<<endl;
+  
   return 0;
 }

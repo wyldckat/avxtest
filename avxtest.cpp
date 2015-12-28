@@ -2,6 +2,7 @@
  * Source code from here: https://thinkingandcomputing.com/2014/02/28/using-avx-instructions-in-matrix-multiplication/
  */
 #include <iostream>
+#include <iomanip>
 #include <time.h>
 extern "C"
 {
@@ -16,6 +17,7 @@ int main(){
   float w[row][col];
   float x[col];
   float y[row];
+  float yb[row];
   float scratchpad[8];
   for (int i=0; i<row; i++) {
     for (int j=0; j<col; j++) {
@@ -27,6 +29,8 @@ int main(){
   }
 
   clock_t t1, t2;
+
+  cout<<setprecision(11);
 
   t1 = clock();
   for (int r = 0; r < num_trails; r++)
@@ -42,12 +46,12 @@ int main(){
     }
   t2 = clock();
   float diff = (((float)t2 - (float)t1) / CLOCKS_PER_SEC ) * 1000;
-  cout<<"Time taken: "<<diff<<endl;
+  cout<<"Time taken (ms): "<<diff<<endl;
 
   for (int i=0; i<row; i++) {
     cout<<y[i]<<", ";
   }
-  cout<<endl;
+  cout<<endl<<endl;
 
   __m256 ymm0, ymm1, ymm2, ymm3, ymm4, ymm5, ymm6, ymm7,
     ymm8, ymm9, ymm10, ymm11, ymm12, ymm13, ymm14, ymm15;
@@ -125,14 +129,20 @@ int main(){
       for (int l=col_reduced_32; l<col; l++) {
         res += w[i][l] * x[l];
       }
-      y[i] = res;
+      yb[i] = res;
     }
   t2 = clock();
   diff = (((float)t2 - (float)t1) / CLOCKS_PER_SEC ) * 1000;
-  cout<<"Time taken: "<<diff<<endl;
+  cout<<"Time taken (ms): "<<diff<<endl;
 
   for (int i=0; i<row; i++) {
-    cout<<y[i]<<", ";
+    cout<<yb[i]<<", ";
+  }
+  cout<<endl<<endl;
+
+  cout<<"Without AVX\t|\tWith AVX\t|\tDifference"<<endl;
+  for (int i=0; i<row; i++) {
+    cout<<y[i]<<" | "<<yb[i]<<" | "<<y[i]-yb[i]<<endl;
   }
   cout<<endl;
 
