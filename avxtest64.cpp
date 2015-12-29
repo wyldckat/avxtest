@@ -31,7 +31,7 @@ int main(){
 
   clock_t t1, t2;
   
-  cout<<setprecision(16);
+  cout<<setprecision(18);
 
   t1 = clock();
   for (int r = 0; r < num_trails; r++)
@@ -117,9 +117,15 @@ int main(){
   }
   cout<<endl<<endl;
 
-  cout<<"Without AVX\t|\tWith AVX\t|\tDifference"<<endl;
+  cout<<"       Without AVX     |       With AVX         |      Difference"<<endl;
   for (int i=0; i<row; i++) {
-    cout<<y[i]<<" | "<<yb[i]<<" | "<<y[i]-yb[i]<<endl;
+    cout
+        <<setw(22)<<y[i]
+        <<" | "
+        <<setw(22)<<yb[i]
+        <<" | "
+        <<setw(22)<<y[i]-yb[i]
+        <<endl;
   }
   cout<<endl;
   

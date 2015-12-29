@@ -140,9 +140,15 @@ int main(){
   }
   cout<<endl<<endl;
 
-  cout<<"Without AVX\t|\tWith AVX\t|\tDifference"<<endl;
+  cout<<"    Without AVX  |    With AVX      |   Difference"<<endl;
   for (int i=0; i<row; i++) {
-    cout<<y[i]<<" | "<<yb[i]<<" | "<<y[i]-yb[i]<<endl;
+    cout
+        <<setw(16)<<y[i]
+        <<" | "
+        <<setw(16)<<yb[i]
+        <<" | "
+        <<setw(16)<<y[i]-yb[i]
+        <<endl;
   }
   cout<<endl;
 
