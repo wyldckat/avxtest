@@ -1,6 +1,6 @@
 avxtest
 =======
-This simple repository is for testing AVX capabilities with GCC. The source code is based on the one provided here: https://thinkingandcomputing.com/2014/02/28/using-avx-instructions-in-matrix-multiplication/ - which seems to have been originally authored by [Yifei Teng](https://github.com/tengyifei/), namely the code in the file `avxtest.cpp`.
+This simple repository is for testing AVX capabilities with GCC. The source code is based on the one provided here: https://thinkingandcomputing.com/2014/02/28/using-avx-instructions-in-matrix-multiplication/ - which has been originally authored by [Yifei Teng](https://github.com/tengyifei/), namely the code in the file `avxtest.cpp`.
 
 The code in this repository was further changed to give formatted results with more precision and at the end is shown the differences in the results.
 
@@ -16,11 +16,18 @@ Simply run:
     g++ -O3 -mavx avxtest.cpp -o avxtest
     g++ -O3 -mavx avxtest64.cpp -o avxtest64
 
+Or use the native settings, which can give you an additional optimization edge:
+
+    g++ -O3 -march=native avxtest.cpp -o avxtest
+    g++ -O3 -march=native avxtest64.cpp -o avxtest64
+
 
 Example output
 ==============
 
-These results were obtained with an AMD A10-7850K. Notice that since it's a 64-bit processor, it takes roughly the same time to do the operations with standard x86/x86_64 FPU, versus the results achieved with AVX, where it takes roughly twice as long to the operations with AVX and double precision.
+These results were obtained with an AMD A10-7850K, while it was running other applications, therefore these are not optimum results. For detailed performance results: https://github.com/wyldckat/avxtest/wiki/A10-7850K-with-DDR3-at-2133-MHz
+
+Notice that since it's a 64-bit processor, it takes roughly the same time to do the operations with standard x86/x86_64 FPU, versus the results achieved with AVX, where it takes roughly twice as long to the operations with AVX and double precision.
 
 avxtest
 -------
