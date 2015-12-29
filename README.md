@@ -1,6 +1,6 @@
 avxtest
 =======
-This simple repository is for testing AVX capabilities with GCC. The source code is based on the one provided here: https://thinkingandcomputing.com/2014/02/28/using-avx-instructions-in-matrix-multiplication/ - which seems to have been originally authored by (Yifei Teng)[https://github.com/tengyifei/], namely the code in the file `avxtest.cpp`.
+This simple repository is for testing AVX capabilities with GCC. The source code is based on the one provided here: https://thinkingandcomputing.com/2014/02/28/using-avx-instructions-in-matrix-multiplication/ - which seems to have been originally authored by [Yifei Teng](https://github.com/tengyifei/), namely the code in the file `avxtest.cpp`.
 
 The code in this repository was further changed to give formatted results with more precision and at the end is shown the differences in the results.
 
