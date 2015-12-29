@@ -1,5 +1,6 @@
 /*
- * Source code from here: https://thinkingandcomputing.com/2014/02/28/using-avx-instructions-in-matrix-multiplication/
+ * Original source code from here: https://thinkingandcomputing.com/2014/02/28/using-avx-instructions-in-matrix-multiplication/
+ * Formatting changes by wyldckat@github.
  */
 #include <iostream>
 #include <iomanip>

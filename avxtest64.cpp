@@ -1,6 +1,8 @@
 /*
  * Source code adapted from here: https://thinkingandcomputing.com/2014/02/28/using-avx-instructions-in-matrix-multiplication/
- * Adaptation made based on the names available in avxintrin.h and the matrix calculation being made.
+ * Done by wyldckat@github:
+ *  - Adaptation made based on the names available in avxintrin.h and the matrix calculation being made, so that it would do double precision math, instead of only float.
+ *  - Formatting changes.
  */
 #include <iostream>
 #include <iomanip>
