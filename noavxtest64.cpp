@@ -3,6 +3,7 @@
  * Done by wyldckat@github:
  *  - Adaptation made based on the names available in avxintrin.h and the matrix calculation being made, so that it would do double precision math, instead of only float.
  *  - Formatting changes.
+ *  - Removed AVX extensions.
  */
 #include <iostream>
 #include <iomanip>
