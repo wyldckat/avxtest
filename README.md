@@ -21,6 +21,11 @@ Or use the native settings, which can give you an additional optimization edge:
     g++ -O3 -march=native avxtest.cpp -o avxtest
     g++ -O3 -march=native avxtest64.cpp -o avxtest64
 
+Or if no AVX is available, build the `noavxtest` alternatives:
+
+    g++ -O3 -march=native noavxtest.cpp -o noavxtest
+    g++ -O3 -march=native noavxtest64.cpp -o noavxtest64
+
 
 Example output
 ==============
