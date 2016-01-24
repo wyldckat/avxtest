@@ -71,7 +71,7 @@ except ImportError:  # pragma: no cover
             return "Command '%s' returned non-zero exit status %d" % (
                 self.cmd, self.returncode)
     subprocess.CalledProcessError = CalledProcessError
-    
+
 '''End of hack for Python 2.6.
 '''
 
@@ -85,7 +85,7 @@ def average(arr, start=0, end=-1):
 
     if end<0:
         end = len(arr)
-        
+
     count = end-start
 
     addition = 0.0
@@ -257,7 +257,7 @@ print "|x86 (ms)"
 print "|" + str(collectedTimings32[0][0])
 
 for coresIndex in range(1, coresTotal):
-    
+
     coresNum = coresIndex + 1
     print "|" + str(collectedTimings32avg[coresIndex][0]) \
         + " (" + str(collectedTimings32stddev[coresIndex][0]) \
@@ -269,7 +269,7 @@ print "|x86_64 (ms)"
 print "|" + str(collectedTimings64[0][0])
 
 for coresIndex in range(1, coresTotal):
-    
+
     coresNum = coresIndex + 1
     print "|" + str(collectedTimings64avg[coresIndex][0]) \
         + " (" + str(collectedTimings64stddev[coresIndex][0]) \
@@ -281,7 +281,7 @@ print "|AVX float (ms)"
 print "|" + str(collectedTimings32[0][1])
 
 for coresIndex in range(1, coresTotal):
-    
+
     coresNum = coresIndex + 1
     print "|" + str(collectedTimings32avg[coresIndex][1]) \
         + " (" + str(collectedTimings32stddev[coresIndex][1]) \
@@ -293,7 +293,7 @@ print "|AVX double (ms)"
 print "|" + str(collectedTimings64[0][1])
 
 for coresIndex in range(1, coresTotal):
-    
+
     coresNum = coresIndex + 1
     print "|" + str(collectedTimings64avg[coresIndex][1]) \
         + " (" + str(collectedTimings64stddev[coresIndex][1]) \
@@ -324,7 +324,7 @@ print "|x86"
 print "|1"
 
 for coresIndex in range(1, coresTotal):
-    
+
     coresNum = coresIndex + 1
     print "|" + str(collectedTimings32avg[coresIndex][0]/collectedTimings32avg[0][0])
 
@@ -333,7 +333,7 @@ print "|x86_64"
 print "|1"
 
 for coresIndex in range(1, coresTotal):
-    
+
     coresNum = coresIndex + 1
     print "|" + str(collectedTimings64avg[coresIndex][0]/collectedTimings64avg[0][0])
 
@@ -342,7 +342,7 @@ print "|AVX float"
 print "|1"
 
 for coresIndex in range(1, coresTotal):
-    
+
     coresNum = coresIndex + 1
     print "|" + str(collectedTimings32avg[coresIndex][1]/collectedTimings32avg[0][1])
 
@@ -351,7 +351,7 @@ print "|AVX double"
 print "|1"
 
 for coresIndex in range(1, coresTotal):
-    
+
     coresNum = coresIndex + 1
     print "|" + str(collectedTimings64avg[coresIndex][1]/collectedTimings64avg[0][1])
 
