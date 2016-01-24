@@ -119,19 +119,19 @@ commandName64 = './avxtest64'
 coresTotal = multiprocessing.cpu_count()
 coreRange = [0, 1]
 
-for coresIndex in range(2, coresTotal)
+for coresIndex in range(2, coresTotal):
     coresNum = coresIndex+1
     if coresNum % 2 == 0:
         coreRange.append(coresNum-1)
 
-collectedTimings32 = coreRange
-collectedTimings64 = coreRange
+collectedTimings32 = coreRange[:]
+collectedTimings64 = coreRange[:]
 
-collectedTimings32avg = coreRange
-collectedTimings64avg = coreRange
+collectedTimings32avg = coreRange[:]
+collectedTimings64avg = coreRange[:]
 
-collectedTimings32stddev = coreRange
-collectedTimings64stddev = coreRange
+collectedTimings32stddev = coreRange[:]
+collectedTimings64stddev = coreRange[:]
 
 for coresIndex in coreRange:
 
