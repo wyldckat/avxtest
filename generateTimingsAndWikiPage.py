@@ -117,12 +117,12 @@ def stddev(arr, start=0, end=-1):
 commandName32 = './avxtest'
 commandName64 = './avxtest64'
 coresTotal = multiprocessing.cpu_count()
-coreRange = [0, 1]
+coreRange = [1, 2]
 
 for coresIndex in range(2, coresTotal):
     coresNum = coresIndex+1
     if coresNum % 2 == 0:
-        coreRange.append(coresNum-1)
+        coreRange.append(coresNum)
 
 collectedTimings32 = coreRange[:]
 collectedTimings64 = coreRange[:]
@@ -133,9 +133,9 @@ collectedTimings64avg = coreRange[:]
 collectedTimings32stddev = coreRange[:]
 collectedTimings64stddev = coreRange[:]
 
-for coresIndex in coreRange:
+for coresIndex in range(0,len(coreRange)):
 
-    coresNum = coresIndex + 1
+    coresNum = coreRange[coresIndex]
 
     commandOutput = subprocess.check_output(
         "mpirun -n " + str(coresNum) + " " + commandName32, shell=True)
@@ -187,9 +187,9 @@ print ""
 print "    g++ -O3 -march=native avxtest.cpp -o avxtest"
 print "    g++ -O3 -march=native avxtest64.cpp -o avxtest64"
 
-for coresIndex in coreRange:
+for coresIndex in range(0,len(coreRange)):
 
-    coresNum = coresIndex + 1
+    coresNum = coreRange[coresIndex]
 
     print ""
     if coresNum == 1:
@@ -249,16 +249,14 @@ print "{|"
 print "! style=\"text-align:left;\" | Architecture/Mode"
 
 print "! 1 core"
-for coresIndex in range(1, coresTotal):
-    print "! " + str(coresIndex+1) + " cores (std-dev)"
+for coresIndex in range(1,len(coreRange)):
+    print "! " + str(coreRange[coresIndex]) + " cores (std-dev)"
 
 print "|-"
 print "|x86 (ms)"
 print "|" + str(collectedTimings32[0][0])
 
-for coresIndex in range(1, coresTotal):
-
-    coresNum = coresIndex + 1
+for coresIndex in range(1,len(coreRange)):
     print "|" + str(collectedTimings32avg[coresIndex][0]) \
         + " (" + str(collectedTimings32stddev[coresIndex][0]) \
         + ")"
@@ -268,9 +266,7 @@ print "|x86_64 (ms)"
 
 print "|" + str(collectedTimings64[0][0])
 
-for coresIndex in range(1, coresTotal):
-
-    coresNum = coresIndex + 1
+for coresIndex in range(1,len(coreRange)):
     print "|" + str(collectedTimings64avg[coresIndex][0]) \
         + " (" + str(collectedTimings64stddev[coresIndex][0]) \
         + ")"
@@ -280,9 +276,7 @@ print "|AVX float (ms)"
 
 print "|" + str(collectedTimings32[0][1])
 
-for coresIndex in range(1, coresTotal):
-
-    coresNum = coresIndex + 1
+for coresIndex in range(1,len(coreRange)):
     print "|" + str(collectedTimings32avg[coresIndex][1]) \
         + " (" + str(collectedTimings32stddev[coresIndex][1]) \
         + ")"
@@ -292,9 +286,7 @@ print "|AVX double (ms)"
 
 print "|" + str(collectedTimings64[0][1])
 
-for coresIndex in range(1, coresTotal):
-
-    coresNum = coresIndex + 1
+for coresIndex in range(1,len(coreRange)):
     print "|" + str(collectedTimings64avg[coresIndex][1]) \
         + " (" + str(collectedTimings64stddev[coresIndex][1]) \
         + ")"
@@ -302,57 +294,49 @@ for coresIndex in range(1, coresTotal):
 print "|-"
 print "| -"
 
-for coresIndex in range(1, coresTotal):
+for coresIndex in range(1,len(coreRange)):
     print "| -"
 
 print "|-"
 print "|Core frequency (MHz) <br>(<tt>cpufreq-aperf</tt>)"
 print "| TODO"
 
-for coresIndex in range(1, coresTotal):
+for coresIndex in range(1,len(coreRange)):
     print "| TODO"
 
 print "|-"
 print "|downscale ratio (c1/cx)"
 print "|1"
 
-for coresIndex in range(1, coresTotal):
+for coresIndex in range(1,len(coreRange)):
     print "| TODO"
 
 print "|-"
 print "|x86"
 print "|1"
 
-for coresIndex in range(1, coresTotal):
-
-    coresNum = coresIndex + 1
+for coresIndex in range(1,len(coreRange)):
     print "|" + str(collectedTimings32avg[coresIndex][0]/collectedTimings32avg[0][0])
 
 print "|-"
 print "|x86_64"
 print "|1"
 
-for coresIndex in range(1, coresTotal):
-
-    coresNum = coresIndex + 1
+for coresIndex in range(1,len(coreRange)):
     print "|" + str(collectedTimings64avg[coresIndex][0]/collectedTimings64avg[0][0])
 
 print "|-"
 print "|AVX float"
 print "|1"
 
-for coresIndex in range(1, coresTotal):
-
-    coresNum = coresIndex + 1
+for coresIndex in range(1,len(coreRange)):
     print "|" + str(collectedTimings32avg[coresIndex][1]/collectedTimings32avg[0][1])
 
 print "|-"
 print "|AVX double"
 print "|1"
 
-for coresIndex in range(1, coresTotal):
-
-    coresNum = coresIndex + 1
+for coresIndex in range(1,len(coreRange)):
     print "|" + str(collectedTimings64avg[coresIndex][1]/collectedTimings64avg[0][1])
 
 print "|}"
