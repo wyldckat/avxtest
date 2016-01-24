@@ -117,17 +117,23 @@ def stddev(arr, start=0, end=-1):
 commandName32 = './avxtest'
 commandName64 = './avxtest64'
 coresTotal = multiprocessing.cpu_count()
+coreRange = [0, 1]
 
-collectedTimings32 = range(0, coresTotal)
-collectedTimings64 = range(0, coresTotal)
+for coresIndex in range(2, coresTotal)
+    coresNum = coresIndex+1
+    if coresNum % 2 == 0:
+        coreRange.append(coresNum-1)
 
-collectedTimings32avg = range(0, coresTotal)
-collectedTimings64avg = range(0, coresTotal)
+collectedTimings32 = coreRange
+collectedTimings64 = coreRange
 
-collectedTimings32stddev = range(0, coresTotal)
-collectedTimings64stddev = range(0, coresTotal)
+collectedTimings32avg = coreRange
+collectedTimings64avg = coreRange
 
-for coresIndex in range(0, coresTotal):
+collectedTimings32stddev = coreRange
+collectedTimings64stddev = coreRange
+
+for coresIndex in coreRange:
 
     coresNum = coresIndex + 1
 
@@ -181,7 +187,7 @@ print ""
 print "    g++ -O3 -march=native avxtest.cpp -o avxtest"
 print "    g++ -O3 -march=native avxtest64.cpp -o avxtest64"
 
-for coresIndex in range(0, coresTotal):
+for coresIndex in coreRange:
 
     coresNum = coresIndex + 1
 
