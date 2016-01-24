@@ -43,7 +43,7 @@ def stddev(arr, start=0, end=-1):
 
 commandName32 = './avxtest'
 commandName64 = './avxtest64'
-coresTotal = 4
+coresTotal = 1
 collectedTimings32 = range(0, coresTotal)
 collectedTimings64 = range(0, coresTotal)
 
@@ -131,13 +131,13 @@ for coresIndex in range(0, coresTotal):
     print "* x86:"
 
     for i in range(0, coresNum):
-        print "** Time taken (ms): " + collectedTimings32[coresIndex][i]
+        print "** Time taken (ms): " + str(collectedTimings32[coresIndex][i])
 
     print ""
     print "* AVX:"
 
     for i in range(coresNum, coresNum*2):
-        print "** Time taken (ms): " + collectedTimings32[coresIndex][i]
+        print "** Time taken (ms): " + str(collectedTimings32[coresIndex][i])
 
     print ""
     print ";64-bit:"
@@ -152,13 +152,13 @@ for coresIndex in range(0, coresTotal):
     print "* x86_64: "
 
     for i in range(0, coresNum):
-        print "** Time taken (ms): " + collectedTimings64[coresIndex][i]
+        print "** Time taken (ms): " + str(collectedTimings64[coresIndex][i])
 
     print ""
     print "* AVX:"
 
     for i in range(coresNum, coresNum*2):
-        print "** Time taken (ms): " + collectedTimings64[coresIndex][i]
+        print "** Time taken (ms): " + str(collectedTimings64[coresIndex][i])
 
     print ""
 
