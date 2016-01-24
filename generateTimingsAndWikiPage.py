@@ -356,7 +356,7 @@ if not useNoAVX:
 print "|-"
 print "| -"
 
-for coresIndex in range(1,len(coreRange)):
+for coresIndex in range(0,len(coreRange)):
     print "| -"
 
 print "|-"
