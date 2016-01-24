@@ -14,7 +14,7 @@ def average(arr, start=0, end=-1):
     if end<0:
         end = len(arr)
         
-    count = end-start+1
+    count = end-start
 
     addition = 0.0
     for i in range(start, end):
@@ -212,7 +212,7 @@ for coresIndex in range(1, coresTotal):
 print "|-"
 print "|AVX double (ms)"
 
-print "|" + str(collectedTimings64[0][0])
+print "|" + str(collectedTimings64[0][1])
 
 for coresIndex in range(1, coresTotal):
     
