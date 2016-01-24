@@ -8,7 +8,7 @@ import math
 
 '''Shoutout to http://calebmadrigal.com/standard-deviation-in-python/ for the average and stddev code'''
 
-def average(arr, start=0, end=-1)
+def average(arr, start=0, end=-1):
 
     if end<0:
         end = len(arr)
@@ -16,13 +16,13 @@ def average(arr, start=0, end=-1)
     count = end-start+1
 
     addition = 0
-    for i in range(start, end)
+    for i in range(start, end):
         addition += arr[i]
 
     return addition
 
 
-def stddev(arr, start=0, end=-1)
+def stddev(arr, start=0, end=-1):
 
     if end<0:
         end = len(arr)
@@ -30,7 +30,7 @@ def stddev(arr, start=0, end=-1)
     avg = average(arr, start, end)
 
     var = arr
-    for i in range(start, end)
+    for i in range(start, end):
         var[i] = (arr[i]-avg)**2
 
     varAvg = average(var, start, end)
@@ -53,7 +53,7 @@ collectedTimings64avg = range(0, coresTotal)
 collectedTimings32stddev = range(0, coresTotal)
 collectedTimings64stddev = range(0, coresTotal)
 
-for coresIndex in collectedTimings:
+for coresIndex in range(0, coresTotal):
 
     coresNum = coresIndex + 1
 
@@ -113,7 +113,7 @@ for coresIndex in range(0, coresTotal):
     print ""
     if coresNum == 1:
         print "== 1 core =="
-    else
+    else:
         print "== " + str(coresNum) + " cores =="
 
     print ""
@@ -122,7 +122,7 @@ for coresIndex in range(0, coresTotal):
 
     if coresNum == 1:
         print "   " + commandName32
-    else
+    else:
         print "   mpirun -n " + str(coresNum) + " " + commandName32
 
     print ""
@@ -143,7 +143,7 @@ for coresIndex in range(0, coresTotal):
 
     if coresNum == 1:
         print "   " + commandName64
-    else
+    else:
         print "   mpirun -n " + str(coresNum) + " " + commandName64
 
     print ""
