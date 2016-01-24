@@ -47,6 +47,12 @@ coresTotal = 4
 collectedTimings32 = range(0, coresTotal)
 collectedTimings64 = range(0, coresTotal)
 
+collectedTimings32avg = range(0, coresTotal)
+collectedTimings64avg = range(0, coresTotal)
+
+collectedTimings32stddev = range(0, coresTotal)
+collectedTimings64stddev = range(0, coresTotal)
+
 for coresIndex in collectedTimings:
 
     coresNum = coresIndex + 1
@@ -55,12 +61,32 @@ for coresIndex in collectedTimings:
         "mpirun -n " + str(coresNum) + " " + commandName32, shell=True)
 
     collectedTimings32[coresIndex] = re.findall('Time taken \(ms\): (\S+)', commandOutput)
+    
+    collectedTimings32avg[coresIndex] = [
+        average(collectedTimings32[coresIndex], 0, coresNum),
+        average(collectedTimings32[coresIndex], coresNum, 2*coresNum),
+        ]
+
+    collectedTimings32stddev[coresIndex] = [
+        stddev(collectedTimings32[coresIndex], 0, coresNum),
+        stddev(collectedTimings32[coresIndex], coresNum, 2*coresNum)
+        ]
 
 
     commandOutput = subprocess.check_output(
         "mpirun -n " + str(coresNum) + " " + commandName64, shell=True)
 
     collectedTimings64[coresIndex] = re.findall('Time taken \(ms\): (\S+)', commandOutput)
+
+    collectedTimings64avg[coresIndex] = [
+        average(collectedTimings64[coresIndex], 0, coresNum),
+        average(collectedTimings64[coresIndex], coresNum, 2*coresNum),
+        ]
+
+    collectedTimings64stddev[coresIndex] = [
+        stddev(collectedTimings64[coresIndex], 0, coresNum),
+        stddev(collectedTimings64[coresIndex], coresNum, 2*coresNum)
+        ]
 
 
 print "= Introduction ="
@@ -152,8 +178,8 @@ print "|" + str(collectedTimings32[0][0])
 for coresIndex in range(1, coresTotal):
     
     coresNum = coresIndex + 1
-    print "|" + str(average(collectedTimings32[coresIndex], 0, coresNum)) \
-        + " (" + str(stddev(collectedTimings32[coresIndex], 0, coresNum)) \
+    print "|" + str(collectedTimings32avg[coresIndex][0]) \
+        + " (" + str(collectedTimings32stddev[coresIndex][0]) \
         + ")"
 
 print "|-"
@@ -164,8 +190,8 @@ print "|" + str(collectedTimings64[0][0])
 for coresIndex in range(1, coresTotal):
     
     coresNum = coresIndex + 1
-    print "|" + str(average(collectedTimings64[coresIndex], 0, coresNum)) \
-        + " (" + str(stddev(collectedTimings64[coresIndex], 0, coresNum)) \
+    print "|" + str(collectedTimings64avg[coresIndex][0]) \
+        + " (" + str(collectedTimings64stddev[coresIndex][0]) \
         + ")"
 
 print "|-"
@@ -176,8 +202,8 @@ print "|" + str(collectedTimings32[0][1])
 for coresIndex in range(1, coresTotal):
     
     coresNum = coresIndex + 1
-    print "|" + str(average(collectedTimings32[coresIndex], coresNum, 2*coresNum)) \
-        + " (" + str(stddev(collectedTimings32[coresIndex], coresNum, 2*coresNum)) \
+    print "|" + str(collectedTimings32avg[coresIndex][1]) \
+        + " (" + str(collectedTimings32stddev[coresIndex][1]) \
         + ")"
 
 print "|-"
@@ -188,8 +214,8 @@ print "|" + str(collectedTimings64[0][0])
 for coresIndex in range(1, coresTotal):
     
     coresNum = coresIndex + 1
-    print "|" + str(average(collectedTimings64[coresIndex], coresNum, 2*coresNum)) \
-        + " (" + str(stddev(collectedTimings64[coresIndex], coresNum, 2*coresNum)) \
+    print "|" + str(collectedTimings64avg[coresIndex][1]) \
+        + " (" + str(collectedTimings64stddev[coresIndex][1]) \
         + ")"
 
 print "|-"
@@ -215,27 +241,39 @@ for coresIndex in range(1, coresTotal):
 print "|-"
 print "|x86"
 print "|1"
-print "|"
-print "|"
-print "|"
+
+for coresIndex in range(1, coresTotal):
+    
+    coresNum = coresIndex + 1
+    print "|" + str(collectedTimings32avg[coresIndex][0]/collectedTimings32avg[0][0])
+
 print "|-"
 print "|x86_64"
 print "|1"
-print "|"
-print "|"
-print "|"
+
+for coresIndex in range(1, coresTotal):
+    
+    coresNum = coresIndex + 1
+    print "|" + str(collectedTimings64avg[coresIndex][0]/collectedTimings64avg[0][0])
+
 print "|-"
 print "|AVX float"
 print "|1"
-print "|"
-print "|"
-print "|"
+
+for coresIndex in range(1, coresTotal):
+    
+    coresNum = coresIndex + 1
+    print "|" + str(collectedTimings32avg[coresIndex][1]/collectedTimings32avg[0][1])
+
 print "|-"
 print "|AVX double"
 print "|1"
-print "|"
-print "|"
-print "|"
+
+for coresIndex in range(1, coresTotal):
+    
+    coresNum = coresIndex + 1
+    print "|" + str(collectedTimings64avg[coresIndex][1]/collectedTimings64avg[0][1])
+
 print "|}"
 print ""
 print "= Inferences ="
