@@ -185,15 +185,22 @@ for coresIndex in range(0,len(coreRange)):
     collectedTimings32[coresIndex] = re.findall('Time taken \(ms\): (\S+)', commandOutput)
     collectedTimings32[coresIndex] = map(float, collectedTimings32[coresIndex])
 
-    collectedTimings32avg[coresIndex] = [ \
-        average(collectedTimings32[coresIndex], 0, coresNum), \
-        average(collectedTimings32[coresIndex], coresNum, 2*coresNum), \
-        ]
+    if not useNoAVX:
+        collectedTimings32avg[coresIndex] = [ \
+            average(collectedTimings32[coresIndex], 0, coresNum), \
+            average(collectedTimings32[coresIndex], coresNum, 2*coresNum), \
+            ]
 
-    collectedTimings32stddev[coresIndex] = [ \
-        stddev(collectedTimings32[coresIndex], 0, coresNum), \
-        stddev(collectedTimings32[coresIndex], coresNum, 2*coresNum) \
-        ]
+        collectedTimings32stddev[coresIndex] = [ \
+            stddev(collectedTimings32[coresIndex], 0, coresNum), \
+            stddev(collectedTimings32[coresIndex], coresNum, 2*coresNum) \
+            ]
+
+    else:
+        collectedTimings32avg[coresIndex] = [average(collectedTimings32[coresIndex], 0, coresNum)]
+
+        collectedTimings32stddev[coresIndex] = [stddev(collectedTimings32[coresIndex], 0, coresNum)]
+
 
     commandOutput = subprocess.check_output(
         "mpirun -n " + str(coresNum) + " " + commandName64, shell=True)
@@ -201,15 +208,21 @@ for coresIndex in range(0,len(coreRange)):
     collectedTimings64[coresIndex] = re.findall('Time taken \(ms\): (\S+)', commandOutput)
     collectedTimings64[coresIndex] = map(float, collectedTimings64[coresIndex])
 
-    collectedTimings64avg[coresIndex] = [
-        average(collectedTimings64[coresIndex], 0, coresNum),
-        average(collectedTimings64[coresIndex], coresNum, 2*coresNum),
-        ]
+    if not useNoAVX:
+        collectedTimings64avg[coresIndex] = [
+            average(collectedTimings64[coresIndex], 0, coresNum),
+            average(collectedTimings64[coresIndex], coresNum, 2*coresNum),
+            ]
 
-    collectedTimings64stddev[coresIndex] = [
-        stddev(collectedTimings64[coresIndex], 0, coresNum),
-        stddev(collectedTimings64[coresIndex], coresNum, 2*coresNum)
-        ]
+        collectedTimings64stddev[coresIndex] = [
+            stddev(collectedTimings64[coresIndex], 0, coresNum),
+            stddev(collectedTimings64[coresIndex], coresNum, 2*coresNum)
+            ]
+
+    else:
+        collectedTimings64avg[coresIndex] = [average(collectedTimings64[coresIndex], 0, coresNum)]
+
+        collectedTimings64stddev[coresIndex] = [stddev(collectedTimings64[coresIndex], 0, coresNum)]
 
 
 print "= Introduction ="
