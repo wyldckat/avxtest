@@ -61,6 +61,7 @@ for coresIndex in range(0, coresTotal):
         "mpirun -n " + str(coresNum) + " " + commandName32, shell=True)
 
     collectedTimings32[coresIndex] = re.findall('Time taken \(ms\): (\S+)', commandOutput)
+    collectedTimings32[coresIndex] = map(double, collectedTimings32[coresIndex])
     
     collectedTimings32avg[coresIndex] = [
         average(collectedTimings32[coresIndex], 0, coresNum),
@@ -77,6 +78,7 @@ for coresIndex in range(0, coresTotal):
         "mpirun -n " + str(coresNum) + " " + commandName64, shell=True)
 
     collectedTimings64[coresIndex] = re.findall('Time taken \(ms\): (\S+)', commandOutput)
+    collectedTimings64[coresIndex] = map(double, collectedTimings32[coresIndex])
 
     collectedTimings64avg[coresIndex] = [
         average(collectedTimings64[coresIndex], 0, coresNum),
