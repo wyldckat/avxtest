@@ -22,6 +22,8 @@ import subprocess
 import re
 import math
 import multiprocessing
+import sys
+import getopt
 
 '''Functions'''
 
@@ -111,11 +113,51 @@ def stddev(arr, start=0, end=-1):
     return math.sqrt(varAvg)
 
 
+'''Help options description'''
+def printhelp():
+  
+    print "Usage: " + sys.argv[0] + " [-s] [-n]"
+    print "Options:"
+    print "     -s      use the shell variants, for example: avxtest.sh"
+    print "     -n      use the non-AVX binaries, for example: noavxtest"
+
 
 '''Script code'''
 
-commandName32 = './avxtest'
-commandName64 = './avxtest64'
+useShellExtensions = False
+useNoAVX = False
+
+try:
+    opts, args = getopt.getopt(sys.argv[1:],"hsn")
+except:
+    printhelp()
+    sys.exit(2)
+
+
+for opt, arg in opts:
+    if opt == '-h':
+        printhelp()
+        sys.exit()
+    elif opt in ("-s"):
+        useShellExtensions = True
+    elif opt in ("-n"):
+        useNoAVX = True
+
+
+if not useShellExtensions and not useNoAVX:
+    commandName32 = './avxtest'
+    commandName64 = './avxtest64'
+elif useShellExtensions and not useNoAVX:
+    commandName32 = './avxtest.sh'
+    commandName64 = './avxtest64.sh'
+elif not useShellExtensions and useNoAVX:
+    commandName32 = './noavxtest'
+    commandName64 = './noavxtest64'
+elif useShellExtensions and useNoAVX:
+    commandName32 = './noavxtest.sh'
+    commandName64 = './noavxtest64.sh'
+
+
 coresTotal = multiprocessing.cpu_count()
 coreRange = [1, 2]
 
@@ -184,8 +226,12 @@ print "= Runtimes ="
 print ""
 print "These were executed on EEEEEEEEEEEE x86_64, using FFFFFFFFFFF. Built with the native options:"
 print ""
-print "    g++ -O3 -march=native avxtest.cpp -o avxtest"
-print "    g++ -O3 -march=native avxtest64.cpp -o avxtest64"
+if not useNoAVX:
+    print "    g++ -O3 -march=native avxtest.cpp -o avxtest"
+    print "    g++ -O3 -march=native avxtest64.cpp -o avxtest64"
+else:
+    print "    g++ -O3 -march=native noavxtest.cpp -o noavxtest"
+    print "    g++ -O3 -march=native noavxtest64.cpp -o noavxtest64"
 
 for coresIndex in range(0,len(coreRange)):
 
@@ -212,11 +258,12 @@ for coresIndex in range(0,len(coreRange)):
     for i in range(0, coresNum):
         print "** Time taken (ms): " + str(collectedTimings32[coresIndex][i])
 
-    print ""
-    print "* AVX:"
+    if not useNoAVX:
+        print ""
+        print "* AVX:"
 
-    for i in range(coresNum, coresNum*2):
-        print "** Time taken (ms): " + str(collectedTimings32[coresIndex][i])
+        for i in range(coresNum, coresNum*2):
+            print "** Time taken (ms): " + str(collectedTimings32[coresIndex][i])
 
     print ""
     print ";64-bit:"
@@ -233,11 +280,12 @@ for coresIndex in range(0,len(coreRange)):
     for i in range(0, coresNum):
         print "** Time taken (ms): " + str(collectedTimings64[coresIndex][i])
 
-    print ""
-    print "* AVX:"
+    if not useNoAVX:
+        print ""
+        print "* AVX:"
 
-    for i in range(coresNum, coresNum*2):
-        print "** Time taken (ms): " + str(collectedTimings64[coresIndex][i])
+        for i in range(coresNum, coresNum*2):
+            print "** Time taken (ms): " + str(collectedTimings64[coresIndex][i])
 
     print ""
 
@@ -271,25 +319,26 @@ for coresIndex in range(1,len(coreRange)):
         + " (" + str(collectedTimings64stddev[coresIndex][0]) \
         + ")"
 
-print "|-"
-print "|AVX float (ms)"
+if not useNoAVX:
+    print "|-"
+    print "|AVX float (ms)"
 
-print "|" + str(collectedTimings32[0][1])
+    print "|" + str(collectedTimings32[0][1])
 
-for coresIndex in range(1,len(coreRange)):
-    print "|" + str(collectedTimings32avg[coresIndex][1]) \
-        + " (" + str(collectedTimings32stddev[coresIndex][1]) \
-        + ")"
+    for coresIndex in range(1,len(coreRange)):
+        print "|" + str(collectedTimings32avg[coresIndex][1]) \
+            + " (" + str(collectedTimings32stddev[coresIndex][1]) \
+            + ")"
 
-print "|-"
-print "|AVX double (ms)"
+    print "|-"
+    print "|AVX double (ms)"
 
-print "|" + str(collectedTimings64[0][1])
+    print "|" + str(collectedTimings64[0][1])
 
-for coresIndex in range(1,len(coreRange)):
-    print "|" + str(collectedTimings64avg[coresIndex][1]) \
-        + " (" + str(collectedTimings64stddev[coresIndex][1]) \
-        + ")"
+    for coresIndex in range(1,len(coreRange)):
+        print "|" + str(collectedTimings64avg[coresIndex][1]) \
+            + " (" + str(collectedTimings64stddev[coresIndex][1]) \
+            + ")"
 
 print "|-"
 print "| -"
@@ -325,19 +374,20 @@ print "|1"
 for coresIndex in range(1,len(coreRange)):
     print "|" + str(collectedTimings64avg[coresIndex][0]/collectedTimings64avg[0][0])
 
-print "|-"
-print "|AVX float"
-print "|1"
+if not useNoAVX:
+    print "|-"
+    print "|AVX float"
+    print "|1"
 
-for coresIndex in range(1,len(coreRange)):
-    print "|" + str(collectedTimings32avg[coresIndex][1]/collectedTimings32avg[0][1])
+    for coresIndex in range(1,len(coreRange)):
+        print "|" + str(collectedTimings32avg[coresIndex][1]/collectedTimings32avg[0][1])
 
-print "|-"
-print "|AVX double"
-print "|1"
+    print "|-"
+    print "|AVX double"
+    print "|1"
 
-for coresIndex in range(1,len(coreRange)):
-    print "|" + str(collectedTimings64avg[coresIndex][1]/collectedTimings64avg[0][1])
+    for coresIndex in range(1,len(coreRange)):
+        print "|" + str(collectedTimings64avg[coresIndex][1]/collectedTimings64avg[0][1])
 
 print "|}"
 print ""
