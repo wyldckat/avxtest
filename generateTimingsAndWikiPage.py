@@ -3,6 +3,7 @@
 import subprocess
 import re
 import math
+import multiprocessing
 
 '''Functions'''
 
@@ -15,11 +16,11 @@ def average(arr, start=0, end=-1):
         
     count = end-start+1
 
-    addition = 0
+    addition = 0.0
     for i in range(start, end):
-        addition += arr[i]
+        addition = addition + arr[i]
 
-    return addition
+    return addition/count
 
 
 def stddev(arr, start=0, end=-1):
@@ -29,7 +30,7 @@ def stddev(arr, start=0, end=-1):
 
     avg = average(arr, start, end)
 
-    var = arr
+    var = range(0, end)
     for i in range(start, end):
         var[i] = (arr[i]-avg)**2
 
@@ -43,7 +44,8 @@ def stddev(arr, start=0, end=-1):
 
 commandName32 = './avxtest'
 commandName64 = './avxtest64'
-coresTotal = 1
+coresTotal = multiprocessing.cpu_count()
+
 collectedTimings32 = range(0, coresTotal)
 collectedTimings64 = range(0, coresTotal)
 
@@ -62,23 +64,22 @@ for coresIndex in range(0, coresTotal):
 
     collectedTimings32[coresIndex] = re.findall('Time taken \(ms\): (\S+)', commandOutput)
     collectedTimings32[coresIndex] = map(float, collectedTimings32[coresIndex])
-    
-    collectedTimings32avg[coresIndex] = [
-        average(collectedTimings32[coresIndex], 0, coresNum),
-        average(collectedTimings32[coresIndex], coresNum, 2*coresNum),
+
+    collectedTimings32avg[coresIndex] = [ \
+        average(collectedTimings32[coresIndex], 0, coresNum), \
+        average(collectedTimings32[coresIndex], coresNum, 2*coresNum), \
         ]
 
-    collectedTimings32stddev[coresIndex] = [
-        stddev(collectedTimings32[coresIndex], 0, coresNum),
-        stddev(collectedTimings32[coresIndex], coresNum, 2*coresNum)
+    collectedTimings32stddev[coresIndex] = [ \
+        stddev(collectedTimings32[coresIndex], 0, coresNum), \
+        stddev(collectedTimings32[coresIndex], coresNum, 2*coresNum) \
         ]
-
 
     commandOutput = subprocess.check_output(
         "mpirun -n " + str(coresNum) + " " + commandName64, shell=True)
 
     collectedTimings64[coresIndex] = re.findall('Time taken \(ms\): (\S+)', commandOutput)
-    collectedTimings64[coresIndex] = map(float, collectedTimings32[coresIndex])
+    collectedTimings64[coresIndex] = map(float, collectedTimings64[coresIndex])
 
     collectedTimings64avg[coresIndex] = [
         average(collectedTimings64[coresIndex], 0, coresNum),
